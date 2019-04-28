@@ -5,9 +5,10 @@ lateinit var p: PApplet
 lateinit var player: Player
 lateinit var background: Background
 lateinit var enemies: Enemies
+lateinit var gui: Gui
 
 class Main : PApplet(){
-    var keysPressed = mutableMapOf<String, Boolean>("left" to false, "right" to false, "up" to false, "down" to false, "space" to false)
+    var keysPressed = mutableMapOf("left" to false, "right" to false, "up" to false, "down" to false, "space" to false)
 
     override fun settings(){
         fullScreen(2)
@@ -21,15 +22,14 @@ class Main : PApplet(){
         player = Player()
         background = Background()
         enemies = Enemies()
+        gui = Gui()
     }
 
 
     override fun draw(){
         background(0)
         handleKeys()
-        player.update()
-        background.update()
-        enemies.update()
+        gui.update()
     }
 
 

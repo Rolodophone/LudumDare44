@@ -1,4 +1,24 @@
 class collisions {
+
+    static boolean hasCollided(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
+        float ww1 = w1 / 2;
+        float ww2 = w2 / 2;
+        float hh1 = h1 / 2;
+        float hh2 = h2 / 2;
+
+        float l1 = x1 - ww1;
+        float r1 = x1 + ww1;
+        float t1 = y1 - hh1;
+        float b1 = y1 + hh1;
+        float l2 = x2 - ww2;
+        float r2 = x2 + ww2;
+        float t2 = y2 - hh2;
+        float b2 = y2 + hh2;
+
+        return r1 > l2 && b2 > t1 && r2 > l1 && b1 > t2;
+    }
+
+
     /**
      * Finds the entrance point of a rect-rect collision using ray-casting. All coordinates are from bottom left.
      *
