@@ -222,7 +222,3 @@ class Enemies {
         }
     }
 }
-
-
-private fun map(value: Float, istart: Float, istop: Float, ostart: Float, ostop: Float) =
-    ostart + (ostop - ostart) * ((value - istart) / (istop - istart))

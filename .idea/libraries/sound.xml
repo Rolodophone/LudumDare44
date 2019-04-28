@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="sound">
+    <CLASSES>
+      <root url="file://C:/Program Files/processing-3.5.3/sound" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://C:/Program Files/processing-3.5.3/sound" recursive="false" />
+  </library>
+</component>

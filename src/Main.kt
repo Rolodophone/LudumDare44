@@ -18,6 +18,7 @@ class Main : PApplet(){
         p = this
 
         imageMode(CENTER)
+        //surface.setResizable(true)
 
         player = Player()
         background = Background()
@@ -92,3 +93,6 @@ fun whileRotated(x: Float, y: Float, radians: Float, block: () -> Unit) {
 fun main(){
     PApplet.main("Main")
 }
+
+fun map(value: Float, istart: Float, istop: Float, ostart: Float, ostop: Float) =
+    ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
