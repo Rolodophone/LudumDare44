@@ -30,7 +30,6 @@ class Main : PApplet(){
         player.update()
         background.update()
         enemies.update()
-
     }
 
 
@@ -82,8 +81,9 @@ class Main : PApplet(){
     }
 }
 
-fun whileRotated(radians: Float, block: () -> Unit){
+fun whileRotated(x: Float, y: Float, radians: Float, block: () -> Unit) {
     p.pushMatrix()
+    p.translate(x, y)
     p.rotate(radians)
     block()
     p.popMatrix()
