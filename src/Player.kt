@@ -43,7 +43,8 @@ class Player {
     var bulletImg: PImage = p.loadImage("bullet1.png")
     var bulletInterval = 500 //milliseconds
     var timeOfLastBullet = p.millis()
-    var lives = 3
+    var lives = 5000
+    var maxLives = 3
 
     val playerHit: SoundFile = SoundFile(p, "playerHit.wav")
     val shoot: SoundFile = SoundFile(p, "shoot.wav")
@@ -53,6 +54,7 @@ class Player {
         this.render()
         for (bullet in bullets) bullet.update()
         bullets.removeIf { bullet -> bullet.dead || bullet.y < -200 }
+        if (lives > maxLives) maxLives = lives
     }
 
     private fun render() {
@@ -65,16 +67,19 @@ class Player {
         if (currentTime - timeOfLastBullet > bulletInterval) {
             bullets.add(Bullet(bulletImg, x, y))
             timeOfLastBullet = currentTime
+
+            shoot.stop()
             shoot.play()
         }
     }
 
-    fun hit() {
-        lives -= 1
+    fun hit(dmg: Int) {
+        lives -= dmg
         playerHit.play()
 
         if (lives <= 0) {
             gui.state = "game over"
+            gui.gameLoop.stop()
             gameOver.play()
         }
     }

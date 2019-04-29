@@ -30,7 +30,7 @@ class Gui {
         }
     }
 
-    var state = "info"
+    var state = "menu"
 
     val gameLoop: SoundFile = SoundFile(p, "crystals.wav")
     val mainLoop: SoundFile = SoundFile(p, "ChildrensPlayground.wav")
@@ -44,18 +44,18 @@ class Gui {
     val gameOver = Image("gameover.png")
 
     val playBtn = Button("playButton.png", p.width / 4f, p.height - 300f) {
-        select.play(); state = "game"; gameLoop.loop(); mainLoop.stop()
+        select.stop(); select.play(); state = "game"; gameLoop.loop(); mainLoop.stop()
     }
     val shopBtn = Button("shopButton.png", p.width * 3f / 4f, p.height - 300f) {
-        select.play(); state = "shop"; menuLoop.loop(); mainLoop.stop()
+        select.stop(); select.play(); state = "shop"; menuLoop.loop(); mainLoop.stop()
     }
     val quitBtn = Button("quitButton.png", p.width / 4f, p.height - 110f) { select.play(); p.exit() }
     val infoBtn = Button("infoButton.png", p.width * 3f / 4f, p.height - 110f) {
-        select.play(); state = "info"; menuLoop.loop(); mainLoop.stop()
+        select.stop(); select.play(); state = "info"; menuLoop.loop(); mainLoop.stop()
     }
 
     val backBtn = Button("backButton.png", p.width - 110f, 60f) {
-        select.play(); state = "menu"; mainLoop.loop(); gameLoop.stop(); menuLoop.stop()
+        select.stop(); select.play(); state = "menu"; mainLoop.loop(); gameLoop.stop(); menuLoop.stop()
     }
 
     val bSpeed = Button("upgradeButton.png", (p.width / 2) - 70f, 180f) {
@@ -63,9 +63,11 @@ class Gui {
             Player.Bullet.speed += 2
             player.lives -= bSpeedLvl * 5
             bSpeedLvl++
+            upgrade.stop()
             upgrade.play()
             totalLvl++
         } else {
+            error.stop()
             error.play()
         }
     }
@@ -74,9 +76,11 @@ class Gui {
             player.speed += 2
             player.lives -= mSpeedLvl * 5
             mSpeedLvl++
+            upgrade.stop()
             upgrade.play()
             totalLvl++
         } else {
+            error.stop()
             error.play()
         }
     }
@@ -85,9 +89,11 @@ class Gui {
             Player.lGain += 1
             player.lives -= lGainLvl * 5
             lGainLvl++
+            upgrade.stop()
             upgrade.play()
             totalLvl++
         } else {
+            error.stop()
             error.play()
         }
     }
@@ -96,15 +102,27 @@ class Gui {
             player.bulletInterval -= 50
             player.lives -= reloadLvl * 5
             reloadLvl++
+            upgrade.stop()
             upgrade.play()
             totalLvl++
         } else {
+            error.stop()
             error.play()
         }
     }
 
-    val playAgainBtn = Button("playButton.png", p.width / 4f, p.height - 110f) { }
-    val quitNowBtn = Button("quitButton.png", p.width * 3f / 4f, p.height - 110f) { select.play(); p.exit() }
+    val playAgainBtn = Button("playButton.png", p.width / 4f, p.height - 110f) {
+        gameLoop.stop()
+        select.stop()
+        select.play()
+        player = Player()
+        background = Background()
+        enemies = Enemies()
+        gui = Gui()
+        state = "menu"
+    }
+    val quitNowBtn =
+        Button("quitButton.png", p.width * 3f / 4f, p.height - 110f) { select.stop(); select.play(); p.exit() }
 
     var bSpeedLvl = 1
     var mSpeedLvl = 1
@@ -113,7 +131,7 @@ class Gui {
     var totalLvl = 4
 
     init {
-        menuLoop.loop()
+        mainLoop.loop()
     }
 
     fun update() {
@@ -173,8 +191,8 @@ class Gui {
             "game over" -> {
                 gameOver.update()
 
-                p.textSize(30f)
-                p.text("lives: ${player.lives}", 55f, p.height - 200f)
+                p.textSize(60f)
+                p.text("Highest number of lives: ${player.maxLives}", 105f, p.height / 2f)
 
                 playAgainBtn.update()
                 quitNowBtn.update()
