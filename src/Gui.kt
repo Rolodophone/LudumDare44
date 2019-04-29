@@ -14,51 +14,116 @@ class Gui {
         }
     }
 
-    class Title {
-        val img: PImage = p.loadImage("mainmenu.png")
+    class Image(val image: String) {
+        val img: PImage = p.loadImage(image)
 
         fun update() {
             p.image(img, p.width / 2f, 230f)
         }
     }
 
-    class Button(val image: String, val onClick: () -> Unit) {
+    class Button(val image: String, val x: Float, val y: Float, var onClick: () -> Unit) {
         val img: PImage = p.loadImage(image)
 
-        fun update(x: Float, y: Float) {
-            val l = x - img.width / 2
-            val r = x + img.width / 2
-            val t = y - img.height / 2
-            val b = y + img.height / 2
-
+        fun update() {
             p.image(img, x, y)
-
-            if (p.mousePressed && p.mouseX > l && p.mouseX < r && p.mouseY > t && p.mouseY < b) onClick()
         }
     }
 
-    var state = "shop"
+    var state = "info"
 
     val gameLoop: SoundFile = SoundFile(p, "crystals.wav")
+    val mainLoop: SoundFile = SoundFile(p, "ChildrensPlayground.wav")
+    val menuLoop: SoundFile = SoundFile(p, "HotelJupiter.wav")
+    val error: SoundFile = SoundFile(p, "error.wav")
+    val upgrade: SoundFile = SoundFile(p, "upgrade.wav")
+    val select: SoundFile = SoundFile(p, "select.wav")
 
     val health = Health()
-    val title = Title()
-    val playBtn = Button("playButton.png") { state = "game"; gameLoop.loop() }
-    val shopBtn = Button("shopButton.png") { state = "shop" }
-    val quitBtn = Button("quitButton.png") { p.exit() }
-    val infoBtn = Button("infoButton.png") { state = "info" }
-    val backBtn = Button("backButton.png") { state = "menu"; gameLoop.stop() }
-    //val leftBtn = Button("leftButton.png")
-    val margin = 15f
+    val title = Image("mainmenu.png")
+    val gameOver = Image("gameover.png")
+
+    val playBtn = Button("playButton.png", p.width / 4f, p.height - 300f) {
+        select.play(); state = "game"; gameLoop.loop(); mainLoop.stop()
+    }
+    val shopBtn = Button("shopButton.png", p.width * 3f / 4f, p.height - 300f) {
+        select.play(); state = "shop"; menuLoop.loop(); mainLoop.stop()
+    }
+    val quitBtn = Button("quitButton.png", p.width / 4f, p.height - 110f) { select.play(); p.exit() }
+    val infoBtn = Button("infoButton.png", p.width * 3f / 4f, p.height - 110f) {
+        select.play(); state = "info"; menuLoop.loop(); mainLoop.stop()
+    }
+
+    val backBtn = Button("backButton.png", p.width - 110f, 60f) {
+        select.play(); state = "menu"; mainLoop.loop(); gameLoop.stop(); menuLoop.stop()
+    }
+
+    val bSpeed = Button("upgradeButton.png", (p.width / 2) - 70f, 180f) {
+        if (player.lives > bSpeedLvl * 5) {
+            Player.Bullet.speed += 2
+            player.lives -= bSpeedLvl * 5
+            bSpeedLvl++
+            upgrade.play()
+            totalLvl++
+        } else {
+            error.play()
+        }
+    }
+    val mSpeed = Button("upgradeButton.png", p.width - 70f, (p.height + 150f) / 2f + 20f) {
+        if (player.lives > mSpeedLvl * 5) {
+            player.speed += 2
+            player.lives -= mSpeedLvl * 5
+            mSpeedLvl++
+            upgrade.play()
+            totalLvl++
+        } else {
+            error.play()
+        }
+    }
+    val lGain = Button("upgradeButton.png", (p.width / 2) - 70f, (p.height + 150f) / 2f + 20f) {
+        if (player.lives > lGainLvl * 5) {
+            Player.lGain += 1
+            player.lives -= lGainLvl * 5
+            lGainLvl++
+            upgrade.play()
+            totalLvl++
+        } else {
+            error.play()
+        }
+    }
+    val reload = Button("upgradeButton.png", p.width - 70f, 180f) {
+        if (player.lives > reloadLvl * 5) {
+            player.bulletInterval -= 50
+            player.lives -= reloadLvl * 5
+            reloadLvl++
+            upgrade.play()
+            totalLvl++
+        } else {
+            error.play()
+        }
+    }
+
+    val playAgainBtn = Button("playButton.png", p.width / 4f, p.height - 110f) { }
+    val quitNowBtn = Button("quitButton.png", p.width * 3f / 4f, p.height - 110f) { select.play(); p.exit() }
+
+    var bSpeedLvl = 1
+    var mSpeedLvl = 1
+    var lGainLvl = 1
+    var reloadLvl = 1
+    var totalLvl = 4
+
+    init {
+        menuLoop.loop()
+    }
 
     fun update() {
         when (state) {
             "menu" -> {
                 title.update()
-                playBtn.update(p.width / 4f, p.height - 300f)
-                shopBtn.update(p.width * 3f / 4f, p.height - 300f)
-                quitBtn.update(p.width / 4f, p.height - 110f)
-                infoBtn.update(p.width * 3f / 4f, p.height - 110f)
+                playBtn.update()
+                shopBtn.update()
+                quitBtn.update()
+                infoBtn.update()
             }
 
             "game" -> {
@@ -70,18 +135,49 @@ class Gui {
 
             "shop" -> {
                 p.textSize(90f)
-                p.text("SHOP", 55f, margin + 75f)
+                p.text("SHOP", 55f, 90f)
 
-                p.textSize(60f)
-                p.text("Items", 40f, margin * 2 + 100f)
-                p.text("Upgrades", 40f, p.height - margin * 6)
+                p.textSize(30f)
+
+                p.text("Bullet speed", 55f, 160f)
+                p.text("Lvl: $bSpeedLvl", 55f, 190f)
+                bSpeed.update()
+
+                p.text("Reload", p.width / 2f, 160f)
+                p.text("Lvl: $reloadLvl", p.width / 2f, 190f)
+                reload.update()
+
+                p.text("Life gain", 55f, (p.height + 150f) / 2f)
+                p.text("Lvl: $lGainLvl", 55f, (p.height + 150f) / 2f + 30f)
+                lGain.update()
+
+                p.text("Movement speed", p.width / 2f, (p.height + 150f) / 2f)
+                p.text("Lvl: $mSpeedLvl", p.width / 2f, (p.height + 150f) / 2f + 30f)
+                mSpeed.update()
 
                 health.update()
-                backBtn.update(p.width - 120f, 70f)
+                backBtn.update()
             }
 
             "info" -> {
+                p.textSize(90f)
+                p.text("INFO", 55f, 90f)
+                backBtn.update()
 
+                p.textSize(30f)
+                p.text("Code:", 55f, 150f); p.text("me", 170f, 150f)
+                p.text("'Art':", 55f, 200f); p.text("me", 170f, 200f)
+                p.text("Music:", 55f, 250f); p.text("my good friend Meerko", 170f, 250f)
+            }
+
+            "game over" -> {
+                gameOver.update()
+
+                p.textSize(30f)
+                p.text("lives: ${player.lives}", 55f, p.height - 200f)
+
+                playAgainBtn.update()
+                quitNowBtn.update()
             }
         }
     }

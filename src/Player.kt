@@ -1,9 +1,13 @@
 import processing.core.PImage
+import processing.sound.SoundFile
 
 class Player {
 
     class Bullet(val img: PImage, val x:Float, var y: Float){
-        val speed = 10f
+        companion object {
+            var speed = 10f
+        }
+
         val w = 3f
         val h = 17f
         var dead = false
@@ -18,13 +22,16 @@ class Player {
                     this.dead = true
 
                     if (enemy !is Enemies.Asteroid) {
-                        player.lives++
+                        player.lives += lGain
                     }
                 }
             }
         }
     }
 
+    companion object {
+        var lGain = 1
+    }
 
     var bullets = mutableListOf<Bullet>()
     var img: PImage = p.loadImage("player.png")
@@ -36,7 +43,11 @@ class Player {
     var bulletImg: PImage = p.loadImage("bullet1.png")
     var bulletInterval = 500 //milliseconds
     var timeOfLastBullet = p.millis()
-    var lives = 200
+    var lives = 3
+
+    val playerHit: SoundFile = SoundFile(p, "playerHit.wav")
+    val shoot: SoundFile = SoundFile(p, "shoot.wav")
+    val gameOver: SoundFile = SoundFile(p, "gameOver.wav")
 
     fun update() {
         this.render()
@@ -54,10 +65,17 @@ class Player {
         if (currentTime - timeOfLastBullet > bulletInterval) {
             bullets.add(Bullet(bulletImg, x, y))
             timeOfLastBullet = currentTime
+            shoot.play()
         }
     }
 
     fun hit() {
         lives -= 1
+        playerHit.play()
+
+        if (lives <= 0) {
+            gui.state = "game over"
+            gameOver.play()
+        }
     }
 }

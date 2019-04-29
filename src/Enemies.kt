@@ -1,5 +1,6 @@
 import processing.core.PConstants.TAU
 import processing.core.PImage
+import processing.sound.SoundFile
 
 class Enemies {
     abstract class Enemy {
@@ -29,6 +30,8 @@ class Enemies {
         override var yhit = y
         override val hhit = h
 
+        val asteroidHit: SoundFile = SoundFile(p, "asteroidHit.wav")
+
         override fun update(){
             x += xSpeed
             y += ySpeed
@@ -42,11 +45,12 @@ class Enemies {
             if (collisions.hasCollided(this.x, this.yhit, this.w, this.hhit, player.x, player.y, player.w, player.h)) {
                 player.hit()
                 this.dead = true
+                asteroidHit.play()
             }
         }
 
         override fun die() {
-
+            asteroidHit.play()
         }
     }
 
@@ -58,6 +62,7 @@ class Enemies {
             val w = 3f
             val h = 40f
             var dead = false
+            val dmg = 1
 
             fun update() {
                 y += speed
@@ -78,6 +83,9 @@ class Enemies {
         override val hhit = h
         val speed = 2f
 
+        val ufoDie: SoundFile = SoundFile(p, "ufoDie.wav")
+        val ufoShoot: SoundFile = SoundFile(p, "ufoShoot.wav")
+
         override fun update() {
             //move towards player
             if (player.x > this.x) x += speed
@@ -87,7 +95,10 @@ class Enemies {
             yhit = y
 
             //shoot every 100 frames
-            if (p.frameCount % 100 == 0) bullets.add(Bullet(x, y))
+            if (p.frameCount % 100 == 0) {
+                bullets.add(Bullet(x, y))
+                ufoShoot.play()
+            }
 
             //update bullets
             for (bullet in bullets) bullet.update()
@@ -96,6 +107,7 @@ class Enemies {
             if (collisions.hasCollided(this.x, this.yhit, this.w, this.hhit, player.x, player.y, player.w, player.h)) {
                 player.hit()
                 this.dead = true
+                ufoDie.play()
             }
 
             p.image(img, x, y)
@@ -103,6 +115,7 @@ class Enemies {
 
         override fun die() {
             this.dead = true
+            ufoDie.play()
         }
     }
 
@@ -115,6 +128,7 @@ class Enemies {
             var dead = false
             val w = 10f
             val h = 40f
+            val dmg = 3
 
             fun update() {
                 y += speed
@@ -136,6 +150,9 @@ class Enemies {
         override var yhit = y - 6
         override val hhit = 15f
 
+        val enemyDie: SoundFile = SoundFile(p, "enemyDie.wav")
+        val enemyShoot: SoundFile = SoundFile(p, "enemyShoot.wav")
+
         override fun update() {
             attack()
             yhit = y - 6
@@ -146,6 +163,7 @@ class Enemies {
             if (collisions.hasCollided(this.x, this.yhit, this.w, this.hhit, player.x, player.y, player.w, player.h)) {
                 player.hit()
                 this.dead = true
+                enemyDie.play()
             }
 
             p.image(img, x, y)
@@ -172,8 +190,9 @@ class Enemies {
 
             //shoot sometimes
             if (p.frameCount % map(p.noise(noiseX), 0f, 1f, 20f, 80f).toInt() == 0) {
-                noiseX += 0.01f
+                noiseX += 0.03f
                 bullets.add(Bullet(x, y))
+                enemyShoot.play()
             }
 
             return
@@ -181,6 +200,96 @@ class Enemies {
 
         override fun die() {
             this.dead = true
+            enemyDie.play()
+        }
+    }
+
+
+    class Boss : Enemy() {
+
+        class Bullet(val x: Float, var y: Float) {
+            val img: PImage = p.loadImage("bossBullet.png")
+            val speed = 12f
+            var dead = false
+            val w = 48f
+            val h = 114f
+            val dmg = 10
+
+            fun update() {
+                y += speed
+                p.image(img, x, y)
+
+                if (collisions.hasCollided(this.x, this.y, this.w, this.h, player.x, player.y, player.w, player.h)) {
+                    player.hit()
+                    this.dead = true
+                }
+            }
+        }
+
+        val img: PImage = p.loadImage("boss.png")
+        override val w = 461f
+        override val h = 523f
+        val speed = 3f
+        var noiseX = 0f
+        var bullets = mutableListOf<Bullet>()
+        override var yhit = y
+        override val hhit = h
+        var hp = 50
+
+        val bossDie: SoundFile = SoundFile(p, "bossDie.wav")
+        val bossShoot: SoundFile = SoundFile(p, "bossShoot.wav")
+        val bossHit: SoundFile = SoundFile(p, "bossHit.wav")
+
+        override fun update() {
+            attack()
+            yhit = y
+
+            for (bullet in bullets) bullet.update()
+            bullets.removeIf { bullet -> bullet.dead || bullet.y > p.height + 200 }
+
+            if (collisions.hasCollided(this.x, this.yhit, this.w, this.hhit, player.x, player.y, player.w, player.h)) {
+                gui.state = "game over"
+            }
+
+            p.image(img, x, y)
+        }
+
+        private fun attack() {
+            for (bullet in player.bullets) {
+
+                // if the bullet is close
+                if (bullet.y - 100 < this.y && (bullet.x + 100 > this.x || bullet.x - 100 < this.x)) {
+                    if (bullet.x > this.x) x -= speed
+                    else x += speed
+
+                    y -= speed
+
+                    return
+                }
+            }
+
+            // if no bullets need to be dodged:
+            if (player.x > this.x) x += speed
+            else x -= speed
+            y += speed
+
+            //shoot sometimes
+            if (p.frameCount % map(p.noise(noiseX), 0f, 1f, 20f, 80f).toInt() == 0) {
+                noiseX += 0.03f
+                bullets.add(Bullet(x, y))
+                bossShoot.play()
+            }
+        }
+
+        override fun die() {
+            hp--
+
+            if (hp <= 0) {
+                this.dead = true
+                bossDie.play()
+            } else {
+                bossHit.play()
+            }
         }
     }
 
@@ -206,16 +315,20 @@ class Enemies {
         if (now - timeOfLastSpawn > spawnInterval) {
 
             when {
-                p.random(20f).toInt() == 0 -> {
+                p.random(gui.totalLvl * 5f).toInt() == 0 -> {
                     enemyList.add(Asteroid())
                     timeOfLastSpawn = now
                 }
-                p.random(140f).toInt() == 0 -> {
+                p.random(gui.totalLvl * 20f).toInt() == 0 -> {
                     enemyList.add(Ufo())
                     timeOfLastSpawn = now
                 }
-                p.random(180f).toInt() == 0 -> {
+                p.random(gui.totalLvl * 40f).toInt() == 0 -> {
                     enemyList.add(EnemyShip())
+                    timeOfLastSpawn = now
+                }
+                p.random(gui.totalLvl * 400f).toInt() == 0 -> {
+                    enemyList.add(Boss())
                     timeOfLastSpawn = now
                 }
             }

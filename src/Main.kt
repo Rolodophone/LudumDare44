@@ -18,7 +18,6 @@ class Main : PApplet(){
         p = this
 
         imageMode(CENTER)
-        //surface.setResizable(true)
 
         player = Player()
         background = Background()
@@ -48,8 +47,16 @@ class Main : PApplet(){
                 'a' -> keysPressed["left"] = true
                 'd' -> keysPressed["right"] = true
                 'w' -> keysPressed["up"] = true
-                's' -> keysPressed["down"] = true
+                's' -> {
+                    keysPressed["down"] = true
+                    if (gui.state == "menu") gui.state = "shop"
+                }
                 ' ' -> keysPressed["space"] = true
+
+                'b' -> gui.state = "menu"
+                'p' -> if (gui.state == "menu" || gui.state == "game over") gui.state = "game"
+                'q' -> if (gui.state == "menu" || gui.state == "game over") gui.state = "quit"
+                'i' -> if (gui.state == "menu") gui.state = "info"
             }
         }
     }
@@ -71,6 +78,19 @@ class Main : PApplet(){
                 ' ' -> keysPressed["space"] = false
             }
         }
+    }
+
+
+    override fun mousePressed() {
+        if (p.mouseX > gui.bSpeed.x - gui.bSpeed.img.width / 2 && p.mouseX < gui.bSpeed.x + gui.bSpeed.img.width / 2 && p.mouseY > gui.bSpeed.y - gui.bSpeed.img.height / 2 && p.mouseY < gui.bSpeed.y + gui.bSpeed.img.height / 2) gui.bSpeed.onClick()
+        else if (p.mouseX > gui.reload.x - gui.reload.img.width / 2 && p.mouseX < gui.reload.x + gui.reload.img.width / 2 && p.mouseY > gui.reload.y - gui.reload.img.height / 2 && p.mouseY < gui.reload.y + gui.reload.img.height / 2) gui.reload.onClick()
+        else if (p.mouseX > gui.lGain.x - gui.lGain.img.width / 2 && p.mouseX < gui.lGain.x + gui.lGain.img.width / 2 && p.mouseY > gui.lGain.y - gui.lGain.img.height / 2 && p.mouseY < gui.lGain.y + gui.lGain.img.height / 2) gui.lGain.onClick()
+        else if (p.mouseX > gui.mSpeed.x - gui.mSpeed.img.width / 2 && p.mouseX < gui.mSpeed.x + gui.mSpeed.img.width / 2 && p.mouseY > gui.mSpeed.y - gui.mSpeed.img.height / 2 && p.mouseY < gui.mSpeed.y + gui.mSpeed.img.height / 2) gui.mSpeed.onClick()
+        else if (p.mouseX > gui.backBtn.x - gui.backBtn.img.width / 2 && p.mouseX < gui.backBtn.x + gui.backBtn.img.width / 2 && p.mouseY > gui.backBtn.y - gui.backBtn.img.height / 2 && p.mouseY < gui.backBtn.y + gui.backBtn.img.height / 2) gui.backBtn.onClick()
+        else if (p.mouseX > gui.playBtn.x - gui.playBtn.img.width / 2 && p.mouseX < gui.playBtn.x + gui.playBtn.img.width / 2 && p.mouseY > gui.playBtn.y - gui.playBtn.img.height / 2 && p.mouseY < gui.playBtn.y + gui.playBtn.img.height / 2) gui.playBtn.onClick()
+        else if (p.mouseX > gui.shopBtn.x - gui.shopBtn.img.width / 2 && p.mouseX < gui.shopBtn.x + gui.shopBtn.img.width / 2 && p.mouseY > gui.shopBtn.y - gui.shopBtn.img.height / 2 && p.mouseY < gui.shopBtn.y + gui.shopBtn.img.height / 2) gui.shopBtn.onClick()
+        else if (p.mouseX > gui.quitBtn.x - gui.quitBtn.img.width / 2 && p.mouseX < gui.quitBtn.x + gui.quitBtn.img.width / 2 && p.mouseY > gui.quitBtn.y - gui.quitBtn.img.height / 2 && p.mouseY < gui.quitBtn.y + gui.quitBtn.img.height / 2) gui.quitBtn.onClick()
+        else if (p.mouseX > gui.infoBtn.x - gui.infoBtn.img.width / 2 && p.mouseX < gui.infoBtn.x + gui.infoBtn.img.width / 2 && p.mouseY > gui.infoBtn.y - gui.infoBtn.img.height / 2 && p.mouseY < gui.infoBtn.y + gui.infoBtn.img.height / 2) gui.infoBtn.onClick()
     }
 
     private fun handleKeys(){
