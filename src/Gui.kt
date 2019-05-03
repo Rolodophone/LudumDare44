@@ -44,18 +44,24 @@ class Gui {
     val gameOver = Image("gameover.png")
 
     val playBtn = Button("playButton.png", p.width / 4f, p.height - 300f) {
-        select.stop(); select.play(); state = "game"; gameLoop.loop(); mainLoop.stop()
+        select.stop(); if (!sfxAreMuted) select.play(); state =
+        "game"; if (!musicIsMuted) gameLoop.loop(); mainLoop.stop()
     }
     val shopBtn = Button("shopButton.png", p.width * 3f / 4f, p.height - 300f) {
-        select.stop(); select.play(); state = "shop"; menuLoop.loop(); mainLoop.stop()
+        select.stop(); if (!sfxAreMuted) select.play(); state =
+        "shop"; if (!musicIsMuted) menuLoop.loop(); mainLoop.stop()
     }
-    val quitBtn = Button("quitButton.png", p.width / 4f, p.height - 110f) { select.play(); p.exit() }
+    val quitBtn = Button("quitButton.png", p.width / 4f, p.height - 110f) {
+        if (!sfxAreMuted) select.play(); p.exit()
+    }
     val infoBtn = Button("infoButton.png", p.width * 3f / 4f, p.height - 110f) {
-        select.stop(); select.play(); state = "info"; menuLoop.loop(); mainLoop.stop()
+        select.stop(); if (!sfxAreMuted) select.play(); state =
+        "info"; if (!musicIsMuted) menuLoop.loop(); mainLoop.stop()
     }
 
     val backBtn = Button("backButton.png", p.width - 110f, 60f) {
-        select.stop(); select.play(); state = "menu"; mainLoop.loop(); gameLoop.stop(); menuLoop.stop()
+        select.stop(); if (!sfxAreMuted) select.play(); state =
+        "menu"; if (!musicIsMuted) mainLoop.loop(); gameLoop.stop(); menuLoop.stop()
     }
 
     val bSpeed = Button("upgradeButton.png", (p.width / 2) - 70f, 180f) {
@@ -64,11 +70,11 @@ class Gui {
             player.lives -= bSpeedLvl * 5
             bSpeedLvl++
             upgrade.stop()
-            upgrade.play()
+            if (!sfxAreMuted) upgrade.play()
             totalLvl++
         } else {
             error.stop()
-            error.play()
+            if (!sfxAreMuted) error.play()
         }
     }
     val mSpeed = Button("upgradeButton.png", p.width - 70f, (p.height + 150f) / 2f + 20f) {
@@ -77,11 +83,11 @@ class Gui {
             player.lives -= mSpeedLvl * 5
             mSpeedLvl++
             upgrade.stop()
-            upgrade.play()
+            if (!sfxAreMuted) upgrade.play()
             totalLvl++
         } else {
             error.stop()
-            error.play()
+            if (!sfxAreMuted) error.play()
         }
     }
     val lGain = Button("upgradeButton.png", (p.width / 2) - 70f, (p.height + 150f) / 2f + 20f) {
@@ -90,11 +96,11 @@ class Gui {
             player.lives -= lGainLvl * 5
             lGainLvl++
             upgrade.stop()
-            upgrade.play()
+            if (!sfxAreMuted) upgrade.play()
             totalLvl++
         } else {
             error.stop()
-            error.play()
+            if (!sfxAreMuted) error.play()
         }
     }
     val reload = Button("upgradeButton.png", p.width - 70f, 180f) {
@@ -103,18 +109,18 @@ class Gui {
             player.lives -= reloadLvl * 5
             reloadLvl++
             upgrade.stop()
-            upgrade.play()
+            if (!sfxAreMuted) upgrade.play()
             totalLvl++
         } else {
             error.stop()
-            error.play()
+            if (!sfxAreMuted) error.play()
         }
     }
 
     val playAgainBtn = Button("playButton.png", p.width / 4f, p.height - 110f) {
         gameLoop.stop()
         select.stop()
-        select.play()
+        if (!sfxAreMuted) select.play()
         player = Player()
         background = Background()
         enemies = Enemies()
@@ -122,7 +128,11 @@ class Gui {
         state = "menu"
     }
     val quitNowBtn =
-        Button("quitButton.png", p.width * 3f / 4f, p.height - 110f) { select.stop(); select.play(); p.exit() }
+        Button(
+            "quitButton.png",
+            p.width * 3f / 4f,
+            p.height - 110f
+        ) { select.stop(); if (!sfxAreMuted) select.play(); p.exit() }
 
     var bSpeedLvl = 1
     var mSpeedLvl = 1
@@ -130,8 +140,11 @@ class Gui {
     var reloadLvl = 1
     var totalLvl = 4
 
+    var musicIsMuted = false
+    var sfxAreMuted = false
+
     init {
-        mainLoop.loop()
+        if (!musicIsMuted) mainLoop.loop()
     }
 
     fun update() {

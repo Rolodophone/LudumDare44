@@ -21,9 +21,8 @@ class Player {
                     enemy.die()
                     this.dead = true
 
-                    if (enemy !is Enemies.Asteroid) {
-                        player.lives += lGain
-                    }
+                    player.lives += lGain * enemy.lPoints
+
                 }
             }
         }
@@ -68,19 +67,23 @@ class Player {
             bullets.add(Bullet(bulletImg, x, y))
             timeOfLastBullet = currentTime
 
-            shoot.stop()
-            shoot.play()
+            if (!sfxAreMuted) {
+                shoot.stop()
+                shoot.play()
+            }
         }
     }
 
     fun hit(dmg: Int) {
         lives -= dmg
-        playerHit.play()
+        if (!sfxAreMuted) playerHit.play()
 
         if (lives <= 0) {
             gui.state = "game over"
             gui.gameLoop.stop()
-            gameOver.play()
+            if (!musicIsMuted) {
+                gameOver.play()
+            }
         }
     }
 }

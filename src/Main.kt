@@ -1,11 +1,17 @@
 import processing.core.PApplet
 import processing.core.PConstants
+import processing.sound.Sound
 
 lateinit var p: PApplet
 lateinit var player: Player
 lateinit var background: Background
 lateinit var enemies: Enemies
 lateinit var gui: Gui
+
+var musicIsMuted = false
+var sfxAreMuted = false
+
+lateinit var soundLib: Sound
 
 class Main : PApplet(){
     var keysPressed = mutableMapOf("left" to false, "right" to false, "up" to false, "down" to false, "space" to false)
@@ -23,6 +29,9 @@ class Main : PApplet(){
         background = Background()
         enemies = Enemies()
         gui = Gui()
+
+        soundLib = Sound(p)
+        soundLib.volume(0.6f)
     }
 
 
@@ -57,6 +66,14 @@ class Main : PApplet(){
                 'p' -> if (gui.state == "menu") gui.playBtn.onClick() else if (gui.state == "game over") gui.playAgainBtn.onClick()
                 'q' -> if (gui.state == "menu" || gui.state == "game over") p.exit()
                 'i' -> if (gui.state == "menu") gui.infoBtn.onClick()
+
+                'n' -> sfxAreMuted = !sfxAreMuted
+                'm' -> {
+                    musicIsMuted = !musicIsMuted
+                    gui.gameLoop.stop()
+                    gui.mainLoop.stop()
+                    gui.menuLoop.stop()
+                }
             }
         }
     }
