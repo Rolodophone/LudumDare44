@@ -43,7 +43,7 @@ class Player {
     var bulletImg: PImage = p.loadImage("bullet1.png")
     var bulletInterval = 500 //milliseconds
     var timeOfLastBullet = p.millis()
-    var lives = 5000
+    var lives = 3
     var maxLives = 3
 
     val playerHit: SoundFile = SoundFile(p, "playerHit.wav")

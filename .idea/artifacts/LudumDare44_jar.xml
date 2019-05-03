@@ -1,0 +1,36 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LudumDare44:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/LudumDare44_jar</output-path>
+    <root id="archive" name="LudumDare44.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/td/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="LudumDare44" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-test.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib-jdk8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/sound/sound.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/sound/javamp3-1.0.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/sound/jsyn-20171016.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-linux-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-linux-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-linux-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-windows-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-linux-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-linux-aarch64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-linux-armv6hf.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-windows-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-linux-aarch64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-linux-armv6hf.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/jogl-all-natives-macosx-universal.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/processing-3.5.3/core/library/gluegen-rt-natives-macosx-universal.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

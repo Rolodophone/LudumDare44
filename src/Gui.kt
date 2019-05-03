@@ -192,7 +192,7 @@ class Gui {
                 gameOver.update()
 
                 p.textSize(60f)
-                p.text("Highest number of lives: ${player.maxLives}", 105f, p.height / 2f)
+                p.text("Highest number of lives: ${player.maxLives}", 105f, p.height - 300f)
 
                 playAgainBtn.update()
                 quitNowBtn.update()

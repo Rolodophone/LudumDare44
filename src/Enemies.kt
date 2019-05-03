@@ -310,19 +310,19 @@ class Enemies {
         if (now - timeOfLastSpawn > spawnInterval) {
 
             when {
-//                p.random(gui.totalLvl * 5f).toInt() == 0 -> { //5
-//                    enemyList.add(Asteroid())
-//                    timeOfLastSpawn = now
-//                }
-//                p.random(gui.totalLvl * 10f).toInt() == 0 -> { //20
-//                    enemyList.add(Ufo())
-//                    timeOfLastSpawn = now
-//                }
-//                p.random(gui.totalLvl * 20f).toInt() == 0 -> { //40
-//                    enemyList.add(EnemyShip())
-//                    timeOfLastSpawn = now
-//                }
-                p.random(gui.totalLvl * 40f).toInt() == 0 -> { //400
+                p.random(gui.totalLvl * 5f).toInt() == 0 -> {
+                    enemyList.add(Asteroid())
+                    timeOfLastSpawn = now
+                }
+                p.random(gui.totalLvl * 20f).toInt() == 0 -> {
+                    enemyList.add(Ufo())
+                    timeOfLastSpawn = now
+                }
+                p.random(gui.totalLvl * 40f).toInt() == 0 -> {
+                    enemyList.add(EnemyShip())
+                    timeOfLastSpawn = now
+                }
+                p.random(gui.totalLvl * 400f).toInt() == 0 -> {
                     enemyList.add(Boss())
                     timeOfLastSpawn = now
                 }

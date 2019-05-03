@@ -11,7 +11,7 @@ class Main : PApplet(){
     var keysPressed = mutableMapOf("left" to false, "right" to false, "up" to false, "down" to false, "space" to false)
 
     override fun settings(){
-        fullScreen(2)
+        fullScreen()
     }
 
     override fun setup(){
