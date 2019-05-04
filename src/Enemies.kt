@@ -55,6 +55,7 @@ class Enemies {
         }
 
         override fun die() {
+            player.lives += player.lGain * this.lPoints
             if (!sfxAreMuted) {
                 asteroidHit.play()
             }
@@ -128,6 +129,7 @@ class Enemies {
         }
 
         override fun die() {
+            player.lives += player.lGain * this.lPoints
             this.dead = true
             if (!sfxAreMuted) {
                 ufoDie.play()
@@ -222,6 +224,7 @@ class Enemies {
         }
 
         override fun die() {
+            player.lives += player.lGain * this.lPoints
             this.dead = true
             if (!sfxAreMuted) {
                 enemyDie.play()
@@ -304,6 +307,7 @@ class Enemies {
 
             if (hp <= 0) {
                 this.dead = true
+                player.lives += player.lGain * this.lPoints
                 if (!sfxAreMuted) {
                     bossDie.play()
                 }
@@ -317,7 +321,7 @@ class Enemies {
 
 
     var enemyList = mutableListOf<Enemy>()
-    var spawnInterval = 1000 // milliseconds
+    var spawnInterval = 0 // milliseconds
     var timeOfLastSpawn = p.millis()
 
     fun update(){
@@ -337,19 +341,19 @@ class Enemies {
         if (now - timeOfLastSpawn > spawnInterval) {
 
             when {
-                p.random(120f / gui.totalLvl).toInt() == 0 -> {
+                p.random(1200f / gui.totalLvl).toInt() == 0 -> {
                     enemyList.add(Asteroid())
                     timeOfLastSpawn = now
                 }
-                p.random(450f / gui.totalLvl).toInt() == 0 -> {
+                p.random(1700f / gui.totalLvl).toInt() == 0 -> {
                     enemyList.add(Ufo())
                     timeOfLastSpawn = now
                 }
-                p.random(1100f / gui.totalLvl).toInt() == 0 -> {
+                p.random(4000f / gui.totalLvl).toInt() == 0 -> {
                     enemyList.add(EnemyShip())
                     timeOfLastSpawn = now
                 }
-                p.random(80000f / gui.totalLvl).toInt() == 0 -> {
+                p.random(50000f / gui.totalLvl).toInt() == 0 -> {
                     enemyList.add(Boss())
                     timeOfLastSpawn = now
                 }

@@ -5,7 +5,7 @@ class Player {
 
     class Bullet(val img: PImage, val x:Float, var y: Float){
         companion object {
-            var speed = 10f
+            var speed = 5f
         }
 
         val w = 3f
@@ -20,9 +20,6 @@ class Player {
                 if (collisions.hasCollided(this.x, this.y, this.w, this.h, enemy.x, enemy.yhit, enemy.w, enemy.hhit)) {
                     enemy.die()
                     this.dead = true
-
-                    player.lives += player.lGain * enemy.lPoints
-
                 }
             }
         }
@@ -36,9 +33,9 @@ class Player {
     var y = p.height - 75f
     val w = 55f
     val h = 75f
-    var speed = 5f
+    var speed = 3f
     var bulletImg: PImage = p.loadImage("bullet1.png")
-    var bulletInterval = 500 //milliseconds
+    var bulletInterval = 1000 //milliseconds
     var timeOfLastBullet = p.millis()
     var lives = 3
     var maxLives = 3
