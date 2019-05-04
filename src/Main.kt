@@ -25,13 +25,15 @@ class Main : PApplet(){
 
         imageMode(CENTER)
 
+        surface.setIcon(loadImage("enemyShip.png"))
+        surface.setTitle("Space Shooter")
+
         player = Player()
         background = Background()
         enemies = Enemies()
         gui = Gui()
 
-        soundLib = Sound(p)
-        soundLib.volume(0.6f)
+        initSound()
     }
 
 
@@ -74,6 +76,7 @@ class Main : PApplet(){
                     gui.mainLoop.stop()
                     gui.menuLoop.stop()
                 }
+                'o' -> initSound()
             }
         }
     }
@@ -118,6 +121,11 @@ class Main : PApplet(){
         if (keysPressed["up"]!!) player.y -= player.speed
         else if (keysPressed["down"]!!) player.y += player.speed
         if (keysPressed["space"]!!) player.tryShoot()
+    }
+
+    private fun initSound() {
+        soundLib = Sound(p)
+        soundLib.volume(0.6f)
     }
 }
 
