@@ -21,17 +21,15 @@ class Player {
                     enemy.die()
                     this.dead = true
 
-                    player.lives += lGain * enemy.lPoints
+                    player.lives += player.lGain * enemy.lPoints
 
                 }
             }
         }
     }
 
-    companion object {
-        var lGain = 1
-    }
 
+    var lGain = 1
     var bullets = mutableListOf<Bullet>()
     var img: PImage = p.loadImage("player.png")
     var x = p.width / 2f

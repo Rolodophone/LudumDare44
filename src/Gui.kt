@@ -92,7 +92,7 @@ class Gui {
     }
     val lGain = Button("upgradeButton.png", (p.width / 2) - 70f, (p.height + 150f) / 2f + 20f) {
         if (player.lives > lGainLvl * 5) {
-            Player.lGain += 1
+            player.lGain += 1
             player.lives -= lGainLvl * 5
             lGainLvl++
             upgrade.stop()
