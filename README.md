@@ -1,8 +1,9 @@
 Space shooter game for Ludum Dare 44: Your life is currency
 
 # How to play
+* Get more lives by killing enemies
 * Use your lives to pay for upgrades
-* Regain lives by killing enemies
+* But beware: the game gets harder the more upgrades you get
 * Don't run out of lives or else it's game over
 
 # Controls
@@ -16,7 +17,7 @@ Space shooter game for Ludum Dare 44: Your life is currency
 * UFOs regain 1 life when killed, spaceships 3, bosses 50
 
 # Known bugs
-* Weird sound gliches, if it happens just mute your PC
+* Really bad sound glitches after a few minutes, when it happens just mute your PC
 
 # Credits
 * Programming, art, and design by me
